@@ -36,6 +36,10 @@
             height: auto;
             border-radius: 8px;
         }
+        .graph {
+            max-width: 1000px; /* Adjust the width as needed */
+            height: auto;
+        }
 
         .content-wrapper {
             display: flex;
@@ -72,10 +76,10 @@
     <h3>The Link: <a href="https://github.com/danielhalm1407/EconProjects/tree/main">Semi Conductor Vol Control</a></h3>
     <p>A study on methodologies to reduce downside risk and negative skew with exposure to semiconductor equities. 
     <h4 class="indented-heading">Step 1</h4>
-    <p class="indented-heading">Start with an underlying index: the <b>PHLX Semiconductor Sector Index (^SOX)</b></p>
+    <p class="indented-heading">Start with an underlying semiconductor etf: the <b>iShares Semiconductor ETF (SOXX)</b></p>
 
     <h4 class="indented-heading">Step 2</h4>
-    <p class="indented-heading">Backtest a handful of simple vol control measures implemented with daily rebalancing based on the <b>PHLX Semiconductor Sector Index (^SOX)</b></p>
+    <p class="indented-heading">Backtest a handful of simple vol control measures implemented with daily rebalancing based on the ETF</p>
 
     <h4 class="indented-heading">Step 3</h4>
     <p class="indented-heading">Observe the very 'best' volatility control theoretically possible:
@@ -90,8 +94,8 @@
     <h4 class="indented-heading">Step 4</h4>
     <p class="indented-heading">Attempt to identify the most appropriate indicative signals of an approaching index or sector downturn:
         <ol>
-            <li>3-month intraday price momentum below 6-month moving average momentum</li><br>
-            <img src = "subpages_1/Strategies.png">
+            <li>MACD crosses below 4 period exponential moving average (EMA) of MACD. <b>Results:</b></li><br>
+            <img class="graph" src = "subpages_1/macd_vis.svg">
             <li>Mixed momentum and consecutive periods of decline</li><br>
             <li>Go short on the index if the index went down at rebalancing</li><br>
         </ol>
