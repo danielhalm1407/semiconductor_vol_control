@@ -7,6 +7,9 @@ ipykernel
 # Bloomberg API
 -m pip install --index-url=https://blpapi.bloomberg.com/repository/releases/python/simple blpapi
 
+# Yahoo Finance API
+yfinance --upgrade --no-cache-dir
+
 # Visualisation
 seaborn
 matplotlib>=3.7
