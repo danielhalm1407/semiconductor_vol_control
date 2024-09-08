@@ -1,63 +1,34 @@
-# EconProjects
+# Semiconductor Volatility Control
 
-A collection of pet/passion projects in economic and financial theory, policy and transit modelling.
+Backtesting a variety of volatility control strategies on an underlying semiconductor index ETF.
 
-**Author:** **[danielhalm1407](https://github.com/danielhalm1407/)**
+Given the growing demand and high internal rate of return in the semiconductor sector due to high margins and turnover, this thematic strategy has some of the highest annualised returns over 10 years (most semiconductor ETFs see 15% to 21% annualised returns).
 
-### Sub-Projects
+However, the cyclical nature of the semiconductor sector and heavy weighting towards high-profile companies such as Nvidia leads to high volatility. Nonetheless, the cyclical nature of this volatility may mean we may be able to predict downturns in the market and reduce our market participation accordingly.
 
-#### Project 1: UBI_Test
 
-- Modelling the Effect of a Universal Basic Income Transfer on Income Distribution Throughout time.
-
-#### Project 2: [Investment_Theory](subpages_1/investment_theory.md)
-
-- Predicting the returns of equities throughout time and attributing them to income and capital appreciation components.
-
-- Predicting the returns of equities based on historic earnings growth, using a geometric series to predict the multiple the market will price in, and hence project price returns. Use this to create a rules-based 'select' index/rules based portfolio.
-
-- **In future:** Aim to use past data to make prediction model stochastic: fit the distribution of the P/E multiple and in turn find the probability distribution of the (dependent) price returns.
-
-- **In future:** Turn into a script that continuously queries the Bloomberg API and rebalances the portfolio. To do this monthly, likely need a cloud tool of some kind.
-
-#### Project 3: Transit Fantasy
-
-- Import existing Google MyMaps transit fantasy maps (as KML Files) and take them even further. Purely for fun.
 
 ###  🗂️ Directory Structure
 ```plaintext
 .
 ├── README.md
-├── credentials.json (used to acess the OpenAQ data)
+├── credentials.json (used to acess market data)
 ├── data
-│   ├── Bloomberg_Rankings.xlsx (The Index Universe Filtered from Bloomberg Data and Ranked by Past Performance)
-│   ├── Top_Stocks.xlsx (The final selection of the equal-weighted top-50 forecast performance eligible stocks)
-│   ├── UBI Test.xlsx (The original experimentation with the UBI Concept in Excel)
-│   └── econ.db (Our Database for future data queries and related tables (E.g. multiples data and EPS Growth Data))
+│   ├── ^SOX.xlsx (The Underlying Index Sourced from Yahoo Finance)
+│   └── semi.db (Database for efficient market derived data storage)
 ├── docs (webpages)
 │   ├── subpages_1
-│       ├── Images placed on these subpages
-│       └── investment_theory.md (Some findings from the First Parts of the Investment_Theory sub-project)
-│   └── index.md (Contents/Home Page of our Website)
+│       ├── Images and figures placed on the overview webpage.
+│   └── index.html (Project overview web page)
 ├── notebooks
-│   ├── Investment_Theory
-│       ├── NB01_Investment_Theory_1.ipynb
-│       ├── NB02_Investment_Theory_2.ipynb
-│       └── NB03_Total_Return_Predictor
-│   └── UBI_Test    
-│       └── NB05_UBI_Test.ipynb
-├── shared_data (early exchanging data between group members)
+│   ├── NB01_Get_Data.ipynb
+│   ├── NB02.1_Backtest_1.ipynb
+│   └── NB02.2_Backtest_2.ipynb
 ├── src
-│   └── econ_utils (our Python package)
-│       ├── inv_theory.ipynb (Functions needed for the Investment_Theory sub-project)
-│       └── ubi_test.py (Functions needed for the UBI_Test sub-project)
+│   ├── semi_utils (our Python package)
+│       └── sql_queries.py (Functions needed for database interaction)
 │   └── scripts (runnable Python scripts)
-│       ├── nb04.py (runs NB04 notebook as a script)
 │       └── sql_in.py (saves the excel files into a database as tables)
-├── Transit Fantasy
-│   ├── Caracas Metro Google Maps Layers
-│   ├── LA Metro Google Maps Layers
-│   └── Toronto Uber-Improved Transport Google Maps Layers
 └── requirements.txt (set of packages to install onto the virtual environment)
 
 ```
@@ -67,14 +38,14 @@ If you want to replicate the analysis in this notebook, you will need to:
 
 1. Clone this repository to your computer
     ```bash
-    git clone git@github.com:danielhalm1407/EconProjects.git
+    git clone git@github.com:danielhalm1407/semiconductor_vol_control.git
     ```
 2. Add it to your VS Code workspace
 3. Set up your conda environment on conda's 3.11 version of python:
 
     ```bash
-    conda create -n venv-econ python=3.11 ipython
-    conda activate venv-econ
+    conda create -n venv-semi python=3.11 ipython
+    conda activate venv-semi
     ```
 4. Make sure `pip` is installed inside that environment:
 
@@ -107,4 +78,4 @@ If you want to replicate the analysis in this notebook, you will need to:
     ```
 7. Alternatively, Run the notebooks
 
-    Run all the notebooks NB01-NB06 in order, selecting the venv-econ [3.11] kernel
+    Run all the notebooks in order, selecting the venv-semi [3.11] kernel
