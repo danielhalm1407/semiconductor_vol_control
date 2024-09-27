@@ -13,6 +13,8 @@ yfinance --upgrade --no-cache-dir
 # Visualisation
 seaborn
 matplotlib>=3.7
+plotly
+nbformat>=4.2.0
 
 # SQL
 jupysql>=0.10.4
