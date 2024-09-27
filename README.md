@@ -6,7 +6,11 @@ Given the growing demand and high internal rate of return in the semiconductor s
 
 However, the cyclical nature of the semiconductor sector and heavy weighting towards high-profile companies such as Nvidia leads to high volatility. Nonetheless, the cyclical nature of this volatility may mean we may be able to predict downturns in the market and reduce our market participation accordingly.
 
+## DISCLAIMER:
 
+I have used Open AI's Chat GPT 3.5 and GPT 4 to assist with syntax and structuring across various coding aspects of this project.
+
+Please refer to the saved chat log [here](https://chatgpt.com/share/66f6ef1b-d8a4-800f-8df6-c69a5ea35283).
 
 ###  🗂️ Directory Structure
 ```plaintext
