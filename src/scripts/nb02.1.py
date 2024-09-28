@@ -34,7 +34,7 @@ soxx = ishares_semi.history(period="max")
 soxx = soxx.reset_index()
 
 # Clean Up the Columns
-#soxx.columns = soxx.columns.str.lower()
+soxx.columns = soxx.columns.str.lower()
 soxx.drop(columns = ['high', 'low', 'dividends', 'stock splits', 'capital gains', 'volume'], inplace = True)
 soxx['date'] = pd.to_datetime(soxx['date']).dt.strftime('%Y-%m-%d')
 soxx['date'] = pd.to_datetime(soxx['date'])
