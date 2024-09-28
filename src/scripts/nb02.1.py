@@ -18,22 +18,59 @@ from dash.dependencies import Input, Output
 import streamlit as st
 
 # Import Modules
-parent_dir = os.path.join(os.getcwd(),"..")
-sys.path.insert(0, parent_dir)
-from semi_utils import sql_queries as sqlq
-from semi_utils import backtests as bkt
+#parent_dir = os.path.join(os.getcwd(),"..")
+#sys.path.insert(0, parent_dir)
+#from semi_utils import sql_queries as sqlq
+#from semi_utils import backtests as bkt
 
-engine = sqlq.get_sql_engine(os.path.join(os.getcwd(), '..', '..','data', 'semi.db'))
-soxx = pd.read_sql('SELECT * FROM soxx', engine)
+#engine = sqlq.get_sql_engine(os.path.join(os.getcwd(), '..', '..','data', 'semi.db'))
+#soxx = pd.read_sql('SELECT * FROM soxx', engine)
 
 # Clean Up the Columns
-soxx.columns = soxx.columns.str.lower()
-soxx.drop(columns = ['high', 'low', 'dividends', 'stock splits', 'capital gains', 'volume'], inplace = True)
-soxx['date'] = pd.to_datetime(soxx['date']).dt.strftime('%Y-%m-%d')
-soxx['date'] = pd.to_datetime(soxx['date'])
+#soxx.columns = soxx.columns.str.lower()
+#soxx.drop(columns = ['high', 'low', 'dividends', 'stock splits', 'capital gains', 'volume'], inplace = True)
+#soxx['date'] = pd.to_datetime(soxx['date']).dt.strftime('%Y-%m-%d')
+#soxx['date'] = pd.to_datetime(soxx['date'])
 
-soxx = bkt.get_returns(soxx)
+soxx = pd.read_csv("../../data/soxx.csv").drop(columns = "Unnamed: 0")
 
+def get_returns(soxx):
+    soxx['intraday_p_change'] = soxx.close - soxx.open
+    soxx.loc[1:,'day_p_change'] = soxx.close - soxx.close.shift(1)
+    soxx.loc[1:,'day_return'] = (soxx.day_p_change / soxx.close.shift(1))
+
+    # Add a 'total_return' column which is the cumulative product of (1 + day_return)
+    soxx['total_return'] = (1 + soxx['day_return']).cumprod()
+
+    # Calculate moving averages for 9, 50, 90, and 200 days
+    #soxx['sma_9'] = soxx['close'].rolling(window=9).mean()
+    #soxx['sma_50'] = soxx['close'].rolling(window=50).mean()
+    #soxx['sma_90'] = soxx['close'].rolling(window=90).mean()
+    #soxx['sma_200'] = soxx['close'].rolling(window=200).mean()
+
+    # Calculate exponential moving averages (EMAs) with smoothing factor of 2
+    period_size = 3
+    soxx['ema_50'] = soxx['close'].ewm(span=50*period_size, adjust=False).mean()
+    soxx['ema_90'] = soxx['close'].ewm(span=90*period_size, adjust=False).mean()
+    soxx['ema_200'] = soxx['close'].ewm(span=200*period_size, adjust=False).mean()
+
+    # Calculate the macd
+    soxx['macd'] = soxx.ema_50 - soxx.ema_90
+
+    # Calculate the signal
+    soxx['signal'] = soxx['macd'].ewm(span=9*0.5*period_size, adjust=False).mean()
+
+    soxx['trigger'] = (soxx['macd'] < soxx['signal']).astype(int)
+
+    # add a day return for strategy_1: go to cash when macd crosses below its 9 period moving average
+    soxx['strategy_1_day_return'] = (1 - soxx.trigger)*soxx.day_return
+    soxx['strategy_1_total_return'] = (1 + soxx['strategy_1_day_return']).cumprod()
+
+    return soxx
+
+#soxx = bkt.get_returns(soxx)
+
+soxx = get_returns(soxx)
 
 
 
@@ -51,7 +88,7 @@ start_idx, end_idx = st.slider(
 
 # Convert index selection to date filtering
 filtered_soxx = soxx.iloc[start_idx:end_idx].copy()
-filtered_soxx = bkt.get_returns(filtered_soxx)
+filtered_soxx = get_returns(filtered_soxx)
 
 # Series Toggle Checkboxes
 show_macd = st.checkbox('Show MACD', value=True)
