@@ -17,6 +17,7 @@ matplotlib>=3.7
 plotly
 nbformat>=4.2.0
 streamlit
+dash
 
 # SQL
 jupysql>=0.10.4
