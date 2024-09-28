@@ -15,6 +15,7 @@ seaborn
 matplotlib>=3.7
 plotly
 nbformat>=4.2.0
+streamlit
 
 # SQL
 jupysql>=0.10.4
