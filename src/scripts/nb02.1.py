@@ -24,15 +24,22 @@ import streamlit as st
 #from semi_utils import backtests as bkt
 
 #engine = sqlq.get_sql_engine(os.path.join(os.getcwd(), '..', '..','data', 'semi.db'))
+
 #soxx = pd.read_sql('SELECT * FROM soxx', engine)
+
+ishares_semi = yf.Ticker("SOXX")
+
+# get historical market data
+soxx = ishares_semi.history(period="max")
+soxx = soxx.reset_index()
 
 # Clean Up the Columns
 #soxx.columns = soxx.columns.str.lower()
-#soxx.drop(columns = ['high', 'low', 'dividends', 'stock splits', 'capital gains', 'volume'], inplace = True)
-#soxx['date'] = pd.to_datetime(soxx['date']).dt.strftime('%Y-%m-%d')
-#soxx['date'] = pd.to_datetime(soxx['date'])
+soxx.drop(columns = ['high', 'low', 'dividends', 'stock splits', 'capital gains', 'volume'], inplace = True)
+soxx['date'] = pd.to_datetime(soxx['date']).dt.strftime('%Y-%m-%d')
+soxx['date'] = pd.to_datetime(soxx['date'])
 
-soxx = pd.read_csv("../../data/soxx.csv").drop(columns = "Unnamed: 0")
+#soxx = pd.read_csv("../../data/soxx.csv").drop(columns = "Unnamed: 0")
 
 def get_returns(soxx):
     soxx['intraday_p_change'] = soxx.close - soxx.open
